@@ -1,0 +1,101 @@
+Resources:
+  CloudWatchAlarmExampleGetPersonRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "CloudWatchAlarmExampleGetPersonRole-${self:provider.stage}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: "/"
+      Policies:
+        - PolicyName: "PrivateLambdaGetPersonPolicy-${self:provider.stage}"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:Query
+                Resource:
+                  - "arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/CloudWatchAlarmExamplePersonTable-${self:provider.stage}"
+                  - "arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/CloudWatchAlarmExamplePersonTable-${self:provider.stage}/index/*"
+  CloudWatchAlarmExamplePostPersonRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "CloudWatchAlarmExamplePostPersonRole-${self:provider.stage}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: "/"
+      Policies:
+        - PolicyName: "CloudWatchAlarmExamplePostPersonPolicy-${self:provider.stage}"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:PutItem
+                Resource:
+                  - "arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/CloudWatchAlarmExamplePersonTable-${self:provider.stage}"
+  CloudWatchAlarmExamplePutPersonRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "CloudWatchAlarmExamplePutPersonRole-${self:provider.stage}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: "/"
+      Policies:
+        - PolicyName: "CloudWatchAlarmExamplePutPersonPolicy-${self:provider.stage}"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:UpdateItem
+                Resource:
+                  - "arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/CloudWatchAlarmExamplePersonTable-${self:provider.stage}"
+  CloudWatchAlarmExampleDeletePersonRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "CloudWatchAlarmExampleDeletePersonRole-${self:provider.stage}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: "/"
+      Policies:
+        - PolicyName: "CloudWatchAlarmExampleDeletePersonPolicy-${self:provider.stage}"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:Query
+                  - dynamodb:DeleteItem
+                Resource:
+                  - "arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/CloudWatchAlarmExamplePersonTable-${self:provider.stage}"
+                  - "arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/CloudWatchAlarmExamplePersonTable-${self:provider.stage}/index/*"
+  

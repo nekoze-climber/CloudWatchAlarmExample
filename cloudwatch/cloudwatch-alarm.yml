@@ -1,0 +1,17 @@
+Resources:
+  CloudWatchAlarmExample:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: ApiGateway5xxAlarm
+      Namespace: AWS/ApiGateway
+      Dimensions:
+        - Name: ApiName
+          Value: CloudWatchAlarmExampleApp API # swaggerのtitle
+        - Name: Stage
+          Value: ${self:provider.stage}
+      MetricName: 5XXError
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Period: 60
+      EvaluationPeriods: 1  # 閾値を超えた回数
+      Statistic: Maximum  # 最大
+      Threshold: 1  # 閾値

@@ -1,0 +1,16 @@
+Resources:
+  CloudWatchAlarmExamplePersonTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: CloudWatchAlarmExamplePersonTable-${self:provider.stage}
+      AttributeDefinitions:
+        - AttributeName: personId
+          AttributeType: S
+        - AttributeName: age
+          AttributeType: S
+      KeySchema:
+        - AttributeName: personId
+          KeyType: HASH
+        - AttributeName: age
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST

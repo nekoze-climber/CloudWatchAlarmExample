@@ -1,0 +1,61 @@
+service: CloudWatchAlarmExampleApp
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: ap-northeast-1
+
+package:
+  exclude:
+    - service/templates/**
+    - .eslintrc.json
+    - LICENSE
+    - README.md
+    - package.json
+    - package-lock.json
+    - service/__test__/**
+    - dynamodb/**
+    - api-gateway/**
+    - iam/**
+  individually: true
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      packagePath: ./package.json
+      forceExclude:
+        - aws-sdk
+plugins:
+  - serverless-webpack
+  - serverless-pseudo-parameters
+
+functions:
+  cloudWatchAlarmExampleGetPerson:
+    handler: service/src/lambda/getPerson/index.handler
+    name: "cloudWatchAlarmExampleApp-getPerson-${self:provider.stage}"
+    role: "arn:aws:iam::#{AWS::AccountId}:role/CloudWatchAlarmExampleGetPersonRole-${self:provider.stage}"
+    description: "This function is test app."
+    environment:
+      PERSON_TABLE_NAME: CloudWatchAlarmExamplePersonTable-${self:provider.stage}
+  cloudWatchAlarmExamplePostPerson:
+    handler: service/src/lambda/postPerson/index.handler
+    name: "cloudWatchAlarmExampleApp-postPerson-${self:provider.stage}"
+    role: "arn:aws:iam::#{AWS::AccountId}:role/CloudWatchAlarmExamplePostPersonRole-${self:provider.stage}"
+    description: "This function is test app."
+    environment:
+      PERSON_TABLE_NAME: CloudWatchAlarmExamplePersonTable-${self:provider.stage}
+  cloudWatchAlarmExamplePutPerson:
+    handler: service/src/lambda/putPerson/index.handler
+    name: "cloudWatchAlarmExampleApp-putPerson-${self:provider.stage}"
+    role: "arn:aws:iam::#{AWS::AccountId}:role/CloudWatchAlarmExamplePutPersonRole-${self:provider.stage}"
+    description: "This function is test app."
+    environment:
+      PERSON_TABLE_NAME: CloudWatchAlarmExamplePersonTable${self:provider.stage}
+  cloudWatchAlarmExampleDeletePerson:
+    handler: service/src/lambda/deletePerson/index.handler
+    name: "cloudWatchAlarmExampleApp-deletePerson-${self:provider.stage}"
+    role: "arn:aws:iam::#{AWS::AccountId}:role/CloudWatchAlarmExampleDeletePersonRole-${self:provider.stage}"
+    description: "This function is test app."
+    environment:
+      PERSON_TABLE_NAME: CloudWatchAlarmExamplePersonTable-${self:provider.stage}
